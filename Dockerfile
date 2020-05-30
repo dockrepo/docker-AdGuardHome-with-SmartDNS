@@ -8,8 +8,21 @@ RUN wget https://github.com/pymumu/smartdns/releases/download/Release31/smartdns
     && mv smartdns/usr/sbin /dist/smartdns \
     && rm -rf smartdns*
 
-FROM adguard/adguardhome:latest
+# step 2
+FROM adguard/adguardhome:latest AS adguardhomeBuilder
+
+# step 3
+FROM alpine:latest
+
 LABEL maintainer="Zyao89 <zyao89@gmail.com>"
+
+COPY --from=adguardhomeBuilder /opt/adguardhome/AdGuardHome /opt/adguardhome/AdGuardHome
+# Update CA certs
+RUN apk --no-cache --update add ca-certificates libcap && \
+    rm -rf /var/cache/apk/* && \
+    mkdir -p /opt/conf && \
+    chmod -R +x /opt/adguardhome
+RUN setcap 'cap_net_bind_service=+eip' /opt/adguardhome/AdGuardHome
 
 COPY --from=builder /dist/smartdns /smartdns
 
@@ -21,6 +34,8 @@ WORKDIR /opt/conf/work
 RUN mkdir -p /opt/conf/work
 
 RUN chmod +x /start.sh
+
+EXPOSE 53/tcp 53/udp 67/udp 68/udp 80/tcp 443/tcp 853/tcp 3000/tcp
 
 VOLUME ["/opt/conf"]
 
