@@ -44,4 +44,4 @@ ENTRYPOINT []
 
 CMD ["/start.sh"]
 
-HEALTHCHECK --interval=5s --timeout=1s CMD ps | grep smartdns | grep -v grep || exit 1
+HEALTHCHECK --interval=5s --timeout=1s CMD ps | grep AdGuardHome | grep -v grep || exit 1
