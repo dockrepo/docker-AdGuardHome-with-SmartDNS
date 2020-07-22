@@ -17,9 +17,17 @@ zyao89/adguardhome-with-smartdns
 
 ## Use SmartDNS
 
+### enable SmartDNS
+
+```sh
+env.OPEN_SMARTDNS=true
+```
+
+### usage
+
 set `upstream DNS servers`:
 
-```
+```sh
 127.0.0.1:5353
 ```
 
