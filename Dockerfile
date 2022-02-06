@@ -2,7 +2,9 @@ FROM alpine:latest AS builder
 
 WORKDIR /
 
-RUN wget https://github.com/pymumu/smartdns/releases/download/Release31/smartdns.1.2020.05.04-0005.x86-linux-all.tar.gz \
+RUN export URL=https://api.github.com/repos/pymumu/smartdns/releases/latest \
+    && export OS="linux" \
+    && wget --tries=3 $(curl -s $URL | grep browser_download_url | egrep -o 'http.+\.\w+' | grep -i "$(uname -m)" | grep -m 1 -i "$(echo $OS)") \
     && tar zxvf smartdns.*.tar.gz \
     && mkdir -p /dist/smartdns \
     && mv smartdns/usr/sbin /dist/smartdns \
@@ -35,7 +37,7 @@ RUN mkdir -p /opt/conf/work
 
 RUN chmod +x /start.sh
 
-EXPOSE 53/tcp 53/udp 67/udp 68/udp 80/tcp 443/tcp 853/tcp 3000/tcp
+EXPOSE 53/tcp 53/udp 67/udp 68/udp 80/tcp 443/tcp 443/udp 784/udp 853/tcp 853/udp 8853/udp 5443/tcp 5443/udp 3000/tcp  
 
 VOLUME ["/opt/conf"]
 
