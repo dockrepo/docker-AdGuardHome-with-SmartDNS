@@ -26,7 +26,7 @@ jobs:
       - name: Build image
         run: docker build . --file Dockerfile --tag $image
       - name: Log into registry
-        run: docker login -u ${{ user }} --password-stdin ${{ token }}
+        run: docker login -u ${{ user }} -p ${{ token }}
       - name: Push image
         run: |
           # 拼接镜像 id，这个镜像 id 就是在使用 docker 镜像时 pull 后面的名字。
