@@ -12,7 +12,7 @@ jobs:
       - name: Check update
         env:
           image: ${{ secrets.IMAGE_NAME }}
-          user: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ secrets.DOCKER_USERNAME }}
           token: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           publish_date1=$(curl -sX GET "https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest" | awk '/published_at/{print $4;exit}' FS='[""]')
@@ -26,11 +26,11 @@ jobs:
       - name: Build image
         run: docker build . --file Dockerfile --tag $image
       - name: Log into registry
-        run: docker login -u ${{ user }} -p ${{ token }}
+        run: docker login -u ${{ username }} -p ${{ token }}
       - name: Push image
         run: |
           # 拼接镜像 id，这个镜像 id 就是在使用 docker 镜像时 pull 后面的名字。
-          IMAGE_ID=$user/$image
+          IMAGE_ID=$username/$image
 
           # 将所有的大写字母转为小写
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
