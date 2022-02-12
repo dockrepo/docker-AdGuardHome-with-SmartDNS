@@ -30,7 +30,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-        run: docker login -u $DOCKER_USERNAME -p $DOCKERHUB_TOKEN
+        run: echo "${DOCKERHUB_TOKEN}" | docker login --username ${DOCKER_USERNAME} --password-stdin
       - name: Push image
         env:
           IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
