@@ -24,21 +24,20 @@ jobs:
         # 构建镜像，指定镜像名
       - name: Build image
         env:
-          image: ${{ secrets.IMAGE_NAME }}
-        run: docker build . --file Dockerfile --tag $image
+          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME
       - name: Log into registry
         env:
-          image: ${{ secrets.IMAGE_NAME }}
-          username: ${{ secrets.DOCKER_USERNAME }}
-          token: ${{ secrets.DOCKERHUB_TOKEN }}
-        run: docker login -u ${{ username }} -p ${{ token }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: docker login -u $DOCKER_USERNAME -p $DOCKERHUB_TOKEN
       - name: Push image
         env:
-          image: ${{ secrets.IMAGE_NAME }}
-          username: ${{ secrets.DOCKER_USERNAME }}
+          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
           # 拼接镜像 id，这个镜像 id 就是在使用 docker 镜像时 pull 后面的名字。
-          IMAGE_ID=$username/$image
+          IMAGE_ID=$DOCKER_USERNAME/$IMAGE_NAME
 
           # 将所有的大写字母转为小写
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
