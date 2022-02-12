@@ -3,6 +3,9 @@ name: Check update everyday
 on:
   schedule:
     - cron: "0 1 * * *"
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -10,10 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Check update
-        env:
-          image: ${{ secrets.IMAGE_NAME }}
-          username: ${{ secrets.DOCKER_USERNAME }}
-          token: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           publish_date1=$(curl -sX GET "https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest" | awk '/published_at/{print $4;exit}' FS='[""]')
           build_date=$(curl -sX GET "https://hub.docker.com/v2/repositories/zyao89/adguardhome-with-smartdns/" | grep -oP '(?<="last_updated": ")[^"]*' | cut -d '.' -f1 | awk '{print $1"Z"}')
@@ -24,10 +23,19 @@ jobs:
           fi
         # 构建镜像，指定镜像名
       - name: Build image
+        env:
+          image: ${{ secrets.IMAGE_NAME }}
         run: docker build . --file Dockerfile --tag $image
       - name: Log into registry
+        env:
+          image: ${{ secrets.IMAGE_NAME }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          token: ${{ secrets.DOCKERHUB_TOKEN }}
         run: docker login -u ${{ username }} -p ${{ token }}
       - name: Push image
+        env:
+          image: ${{ secrets.IMAGE_NAME }}
+          username: ${{ secrets.DOCKER_USERNAME }}
         run: |
           # 拼接镜像 id，这个镜像 id 就是在使用 docker 镜像时 pull 后面的名字。
           IMAGE_ID=$username/$image

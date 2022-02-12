@@ -2,6 +2,7 @@
 
 [Docker] AdGuardHome with SmartDNS
 
+[![Check update everyday](https://github.com/dockrepo/docker-AdGuardHome-with-SmartDNS/actions/workflows/workflow.yml/badge.svg?branch=master&event=workflow_run)](https://github.com/dockrepo/docker-AdGuardHome-with-SmartDNS/actions/workflows/workflow.yml)
 [![Docker Build Status](https://img.shields.io/docker/build/zyao89/adguardhome-with-smartdns.svg)](https://hub.docker.com/r/zyao89/adguardhome-with-smartdns) [![Docker Automated build](https://img.shields.io/docker/automated/zyao89/adguardhome-with-smartdns.svg)](https://hub.docker.com/r/zyao89/adguardhome-with-smartdns) [![Docker Stars](https://img.shields.io/docker/stars/zyao89/adguardhome-with-smartdns.svg)](https://hub.docker.com/r/zyao89/adguardhome-with-smartdns) [![Docker Pulls](https://img.shields.io/docker/pulls/zyao89/adguardhome-with-smartdns.svg)](https://hub.docker.com/r/zyao89/adguardhome-with-smartdns)
 
 This Dockerfile build an image for [AdGuardHome](https://hub.docker.com/r/adguard/adguardhome) with SmartDNS.
